@@ -24,9 +24,10 @@ workflows:
   build-workflow:  # PRs and merges to master
     jobs:
       - test
-#      - upload-coverage:
-#          <<: *filter-only-master
-#          requires: test
+      - upload-coverage:
+          <<: *filter-only-master
+          requires:
+            - test
 #  release-workflow:  # gated to tags
 #    jobs:
 #      - build:
@@ -52,6 +53,8 @@ jobs:
       - image: circleci/python:3.7
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/workspace
       - restore_cache:  # if we have a cached env, use it
           keys:
             - dependencies-{{ checksum "setup.py" }}
@@ -76,10 +79,28 @@ jobs:
               --with-coverage --cover-xml --cover-xml-file build/reports/coverage.xml \
               --with-xunit --xunit-file build/reports/nosetests.xml
             flake8 --output-file build/reports/pep8.txt harserver tests
+            cp .coverage ~/workspace
+      - persist_to_workspace:
+          root: ~/workspace
+          paths:
+            - .coverage
       - store_artifacts:
           path: build/reports
           destination: build-reports
-#  upload-coverage: {}
+  upload-coverage:
+    working_directory: ~/source
+    docker:
+      - image: circleci/python:3.7
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/workspace
+      - run:
+          command: |
+            python -mvenv env
+            ./env/bin/pip install coveralls
+            cp ~/workspace/.coverage .
+            coveralls
 #  upload-docker: {}
 #  upload-docs: {}
 #  upload-python: {}

@@ -30,6 +30,14 @@ setuptools.setup(
             'yapf==0.25.0',
         ],
     },
+    project_urls={
+        'Builds':
+            'https://circleci.com/gh/dave-shawley/har-server/',
+        'Coverage Reports':
+            'https://coveralls.io/github/dave-shawley/har-server',
+        'Source Code':
+            'https://github.com/dave-shawley/har-server/',
+    },
     classifiers=[
         'Development Status :: 1 - Planning',
         'Environment :: No Input/Output (Daemon)',
