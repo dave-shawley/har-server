@@ -79,6 +79,7 @@ jobs:
               --with-coverage --cover-xml --cover-xml-file build/reports/coverage.xml \
               --with-xunit --xunit-file build/reports/nosetests.xml
             flake8 --output-file build/reports/pep8.txt harserver tests
+            cp ~/.coverage ~/workspace
       - persist_to_workspace:
           root: ~/workspace
           paths:
