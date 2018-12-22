@@ -15,7 +15,7 @@ defaults:
         ignore: /.*/
 
 executors:
-  python-3.7:
+  python-3-7:
     docker:
       - image: circleci/python:3.7
 
