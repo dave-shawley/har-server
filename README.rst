@@ -3,6 +3,8 @@ HAR Server
 ==========
 Simple programmable HTTP API server.
 
+|build| |coverage|
+
 The server is programmable using elements from the `HTTP Archive`_ (HAR)
 specification originally developed by `Jan Odvarko`_ and the `W3C`_
 web-performance working group.  It was never moved beyond draft in the
@@ -91,3 +93,8 @@ on port 32443 with the registered response::
 .. _Mashape: https://en.wikipedia.org/wiki/Mashape
 .. _mockbin: https://mockbin.com/
 .. _W3C: https://w3c.github.io/web-performance/specs/HAR/Overview.html
+
+.. |build| image:: https://circleci.com/gh/dave-shawley/har-server/tree/master.svg?style=svg
+   :target: https://circleci.com/gh/dave-shawley/har-server/tree/master
+.. |coverage| image:: https://coveralls.io/repos/github/dave-shawley/har-server/badge.svg?branch=master
+   :target: https://coveralls.io/github/dave-shawley/har-server?branch=master
