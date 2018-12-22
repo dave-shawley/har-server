@@ -98,7 +98,8 @@ jobs:
       - run:
           command: |
             python -mvenv env
-            ./env/bin/pip install coveralls
+            . ./env/bin/activate
+            pip install coveralls
             cp ~/workspace/.coverage .
             coveralls
 #  upload-docker: {}
