@@ -30,12 +30,17 @@ setuptools.setup(
             'wheel==0.32.3',
             'yapf==0.25.0',
         ],
+        'docs': [
+            'Sphinx==1.8.2',
+        ],
     },
     project_urls={
         'Builds':
             'https://circleci.com/gh/dave-shawley/har-server/',
         'Coverage Reports':
             'https://coveralls.io/github/dave-shawley/har-server',
+        'Documentation':
+            'http://har-server.readthedocs.io/',
         'Source Code':
             'https://github.com/dave-shawley/har-server/',
     },

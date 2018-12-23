@@ -43,10 +43,9 @@ workflows:
 #          <<: *filter-only-tagged
 #          requires: upload-python
 #          context: org-global
-#      - upload-docs:
-#          <<: *filter-only-tagged
-#          requires: create-workspace
-#          context: org-global
+      - upload-docs:
+          <<: *filter-only-tagged
+          requires: create-workspace
 
 jobs:
   create-workspace:  # create an environment and install requirements
@@ -120,7 +119,21 @@ jobs:
             coveralls
 
 #  upload-docker: {}
-#  upload-docs: {}
+
+  upload-docs:
+    working_directory: ~/source
+    docker:
+      - image: circleci/python:3.7
+    steps:
+      - attach_workspace:
+          at: ~/workspace
+      - run:
+          command: |
+            . ~/workspace/env/bin/activate
+            ./setup.py build_sphinx  # just verify that they can be built
+            curl -request POST -d "token=$READTHEDOCS_TOKEN" -d 'branches=master' \
+              -H 'Email-Address: daveshawley+rtd@gmail.com' \
+              https://readthedocs.org/api/v2/webhook/har-server/57735/
 
   upload-python:
     working_directory: ~/source
