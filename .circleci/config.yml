@@ -64,17 +64,17 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            python -mvenv env
-            . ./env/bin/activate
+            python -mvenv ~/workspace/env
+            . ~/workspace/env/bin/activate
             pip install -e '.[dev]'
       - save_cache:  # cache the environment for reuse across builds
           paths:
-            - ./env
+            - ~/workspace/env
           key: environment-cache-{{ checksum "setup.py" }}
       - persist_to_workspace:  # save it to the workspace for other jobs
           root: ~/workspace
           paths:
-            - env
+            - ./env
 
   test:  # run tests with coverage enabled
     working_directory: ~/source
