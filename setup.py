@@ -20,6 +20,7 @@ setuptools.setup(
     extras_require={
         'dev': [
             'coverage==4.5.2',
+            'coveralls==1.5.1',
             'flake8==3.6.0',
             'nose==1.3.7',
             'pycodestyle==2.4.0',

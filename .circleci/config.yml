@@ -23,31 +23,33 @@ workflows:
   version: "2"
   build-workflow:  # PRs and merges to master
     jobs:
-      - test
+      - create-workspace
+      - test:
+          requires:
+            - create-workspace
       - upload-coverage:
           <<: *filter-only-master
           requires:
             - test
 #  release-workflow:  # gated to tags
 #    jobs:
-#      - build:
+#      - create-workspace:
 #          <<: *filter-only-tagged
 #      - upload-python:
 #          <<: *filter-only-tagged
-#          requires: build
+#          requires: create-workspace
 #          context: org-global
 #      - upload-docker:
 #          <<: *filter-only-tagged
-#          requires: build
+#          requires: upload-python
 #          context: org-global
 #      - upload-docs:
 #          <<: *filter-only-tagged
-#          requires: build
+#          requires: create-workspace
 #          context: org-global
 
 jobs:
-#  build: {}
-  test:  # run tests with coverage enabled
+  create-workspace:  # create an environment and install requirements
     working_directory: ~/source
     docker:
       - image: circleci/python:3.7
@@ -57,36 +59,52 @@ jobs:
           at: ~/workspace
       - restore_cache:  # if we have a cached env, use it
           keys:
-            - dependencies-{{ checksum "setup.py" }}
-            - dependencies-
+            - environment-cache-{{ checksum "setup.py" }}-v2
+            - environment-cache-
       - run:
           name: Install dependencies
           command: |
-            python -mvenv env
-            . ./env/bin/activate
+            python -mvenv ~/workspace/env
+            . ~/workspace/env/bin/activate
             pip install -e '.[dev]'
-      - save_cache:
+      - save_cache:  # cache the environment for reuse across builds
+          paths:
+            - ~/workspace/env
+          key: environment-cache-{{ checksum "setup.py" }}-v2
+      - persist_to_workspace:  # save it to the workspace for other jobs
+          root: ~/workspace
           paths:
             - ./env
-          key: dependencies-{{ checksum "setup.py" }}
+
+  test:  # run tests with coverage enabled
+    working_directory: ~/source
+    docker:
+      - image: circleci/python:3.7
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/workspace
       - run:
           name: Run tests
           command: |
-            . ./env/bin/activate
+            . ~/workspace/env/bin/activate
             mkdir -p build/reports
             yapf -dr docs/conf.py harserver tests > build/reports/yapf.diff
             nosetests \
               --with-coverage --cover-xml --cover-xml-file build/reports/coverage.xml \
-              --with-xunit --xunit-file build/reports/nosetests.xml
+              --with-xunit --xunit-file build/reports/junit.xml
             flake8 --output-file build/reports/pep8.txt harserver tests
             cp .coverage ~/workspace
-      - persist_to_workspace:
+      - store_test_results:
+          path: build/reports
+      - persist_to_workspace:  # .coverage is needed by coveralls
           root: ~/workspace
           paths:
             - .coverage
       - store_artifacts:
           path: build/reports
           destination: build-reports
+
   upload-coverage:
     working_directory: ~/source
     docker:
@@ -97,11 +115,22 @@ jobs:
           at: ~/workspace
       - run:
           command: |
-            python -mvenv env
-            . ./env/bin/activate
-            pip install coveralls
+            . ~/workspace/env/bin/activate
             cp ~/workspace/.coverage .
             coveralls
+
 #  upload-docker: {}
 #  upload-docs: {}
-#  upload-python: {}
+
+#  upload-python:
+#    working_directory: ~/source
+#    docker:
+#      - image: circleci/python:3.7
+#    steps:
+#      - attach_workspace:
+#          at: ~/workspace
+#      - run:
+#          command: |
+#            . ~/workspace/env/bin/activate
+#            ./setup.py check sdist bdist_wheel
+#            twine upload dist/*
