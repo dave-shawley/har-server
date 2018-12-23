@@ -92,9 +92,11 @@ jobs:
             yapf -dr docs/conf.py harserver tests > build/reports/yapf.diff
             nosetests \
               --with-coverage --cover-xml --cover-xml-file build/reports/coverage.xml \
-              --with-xunit --xunit-file build/reports/nosetests.xml
+              --with-xunit --xunit-file build/reports/junit.xml
             flake8 --output-file build/reports/pep8.txt harserver tests
             cp .coverage ~/workspace
+      - store_test_results:
+          path: build/reports
       - persist_to_workspace:  # .coverage is needed by coveralls
           root: ~/workspace
           paths:
