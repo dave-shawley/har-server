@@ -37,15 +37,18 @@ workflows:
           <<: *filter-only-tagged
       - upload-python:
           <<: *filter-only-tagged
-          requires: create-workspace
+          requires:
+            - create-workspace
           context: org-global
 #      - upload-docker:
 #          <<: *filter-only-tagged
-#          requires: upload-python
+#          requires:
+#            - upload-python
 #          context: org-global
       - upload-docs:
           <<: *filter-only-tagged
-          requires: create-workspace
+          requires:
+            - create-workspace
 
 jobs:
   create-workspace:  # create an environment and install requirements
