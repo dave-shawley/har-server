@@ -3,7 +3,7 @@ HAR Server
 ==========
 Simple programmable HTTP API server.
 
-|build| |coverage|
+|build| |coverage| |docs|
 
 The server is programmable using elements from the `HTTP Archive`_ (HAR)
 specification originally developed by `Jan Odvarko`_ and the `W3C`_
@@ -98,3 +98,5 @@ on port 32443 with the registered response::
    :target: https://circleci.com/gh/dave-shawley/har-server/tree/master
 .. |coverage| image:: https://coveralls.io/repos/github/dave-shawley/har-server/badge.svg?branch=master
    :target: https://coveralls.io/github/dave-shawley/har-server?branch=master
+.. |docs| image:: https://readthedocs.org/projects/har-server/badge/?version=latest
+   :target: https://har-server.readthedocs.io/en/latest/?badge=latest
