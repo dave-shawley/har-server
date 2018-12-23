@@ -59,7 +59,7 @@ jobs:
           at: ~/workspace
       - restore_cache:  # if we have a cached env, use it
           keys:
-            - environment-cache-{{ checksum "setup.py" }}
+            - environment-cache-{{ checksum "setup.py" }}-v2
             - environment-cache-
       - run:
           name: Install dependencies
@@ -70,7 +70,7 @@ jobs:
       - save_cache:  # cache the environment for reuse across builds
           paths:
             - ~/workspace/env
-          key: environment-cache-{{ checksum "setup.py" }}
+          key: environment-cache-{{ checksum "setup.py" }}-v2
       - persist_to_workspace:  # save it to the workspace for other jobs
           root: ~/workspace
           paths:
