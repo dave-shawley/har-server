@@ -29,6 +29,8 @@ html_theme_options = {
     'description': 'Programmable HTTP server for testing',
     'fixed_sidebar': True,
     'github_button': True,
+    'show_related': True,
+    'show_relbar_bottom': True,
 }
 html_sidebars = {}
 intersphinx_mapping = {
