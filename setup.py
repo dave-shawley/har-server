@@ -17,8 +17,12 @@ setuptools.setup(
         'aiohttp==3.4.4',
         'yarl==1.3.0',
     ],
+    entry_points={
+        'console_scripts': ['har-server=harserver.app:entry_point'],
+    },
     extras_require={
         'dev': [
+            'asynctest==0.12.2',
             'coverage==4.5.2',
             'coveralls==1.5.1',
             'flake8==3.6.0',
@@ -30,9 +34,7 @@ setuptools.setup(
             'wheel==0.32.3',
             'yapf==0.25.0',
         ],
-        'docs': [
-            'Sphinx==1.8.2',
-        ],
+        'docs': ['Sphinx==1.8.2'],
     },
     project_urls={
         'Builds':
