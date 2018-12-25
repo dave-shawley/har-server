@@ -1,0 +1,35 @@
+%YAML 1.2
+---
+openapi: "3.0.0"
+info:
+  title: HTTP Archive Server
+  description: |
+    Programmable HTTP server that understands HARs!
+  version: "0.0.1"
+paths:
+  /:
+    get:
+      summary: API documentation page
+      responses:
+        200:
+          description: |
+            Nicely formatted API page.
+
+            The formatting is provided via [ReDoc] and the machine-readable
+            specification is available at /static/openapi.yaml
+
+            [ReDoc]: https://github.com/Rebilly/ReDoc
+
+  /static/openapi.yaml:
+    get:
+      summary: OpenAPI 3.0 document
+      responses:
+        200:
+          description: |
+            API specification per [OpenAPI 3.2].
+
+            [OpenAPI 3.2]: https://github.com/OAI/OpenAPI-Specification/blob/3.0.2/versions/3.0.2.md
+          content:
+            application/yaml:
+              schema:
+                type: object

@@ -2,6 +2,13 @@
 Release History
 ===============
 
+`Next Release`_
+===============
+- Serve ReDoc_ formatted OpenAPI_ specification at root.
+
+.. _OpenAPI: https://github.com/OAI/OpenAPI-Specification/blob/3.0.2/versions/3.0.2.md
+.. _ReDoc: https://github.com/Rebilly/ReDoc
+
 `0.0.1`_
 ========
 - Fixed minor CI problems.  This is the first package on `PyPI`_ and
